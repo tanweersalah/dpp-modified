@@ -44,17 +44,17 @@ configuration:
   keycloak:
     realm: miw_test
     resource: Cl13-CX-Battery
-    tokenUri: 'http://keycloak:8080/realms/miw_test/protocol/openid-connect/token'
-    userInfoUri: 'http://keycloak:8080/realms/miw_test/protocol/openid-connect/userinfo'
+    tokenUri: 'http://172.21.0.11:8080/realms/miw_test/protocol/openid-connect/token'
+    userInfoUri: 'http://172.21.0.11:8080/realms/miw_test/protocol/openid-connect/userinfo'
 
   edc:
-    endpoint: 'http://localhost:8181'
+    endpoint: 'http://172.21.0.11:8181'
     readiness: '/api/check/readiness'
     management: '/management/v2'
     catalog: '/catalog/request'
     negotiation: '/contractnegotiations'
     transfer: '/transferprocesses'
-    receiverEndpoint: 'http://host.docker.internal:9999/endpoint'
+    receiverEndpoint: 'http://10.22.189.3:9999/endpoint'
     delay:  100 # -- Negotiation status Delay in milliseconds in between async requests [<= 500]
     transferType: "HttpData-PULL"
     timeout:
@@ -120,7 +120,7 @@ configuration:
       lifetime: 12 # -- Hours
 
   discovery:
-    endpoint: "http://localhost:4245/api/v1.0/administration/connectors/discovery/search"
+    endpoint: "http://172.21.0.11:4245/api/v1.0/administration/connectors/discovery/search"
     bpn:
       key: "manufacturerPartId"
       searchPath: "/api/v1.0/administration/connectors/bpnDiscovery/search"

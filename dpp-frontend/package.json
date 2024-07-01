@@ -3,7 +3,7 @@
   "version": "3.1.0",
   "private": true,
   "scripts": {
-    "dev": "vite --port 5555",
+    "dev": "vite --port 80",
     "serve": "vite --host localhost",
     "clean": "rimraf ./node_modules/.vite",
     "build:analyze": "vite build --mode analyze",

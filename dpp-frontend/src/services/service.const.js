@@ -28,10 +28,10 @@ import numberUtil from "@/utils/numberUtil";
 const VERSION = "APP_VERSION";
 
 // Mandatory URLs
-const IDP_URL = "http://keycloak:8080/";
+const IDP_URL = "http://172.21.0.11:8080";
 
 // Get urls that can be empty
-let serverUrl = "http://localhost:5555";
+let serverUrl = "http://localhost:8080";
 let backendUrl = "http://localhost:9999";
 let retries = "APP_API_MAX_RETRIES";
 let searchTimeout = "API_SEARCH_TIMEOUT";

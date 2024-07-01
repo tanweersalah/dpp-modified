@@ -513,8 +513,8 @@ public class CatenaXService extends BaseService {
           //remove
             EdcDiscoveryEndpoint edcDiscovery = new EdcDiscoveryEndpoint() ;
             edcDiscovery.setBpn("BPNL1234567890ZZ");
-            //List<String> edcProviderEndpoints = Arrays.asList("http://172.21.0.11:9184");
-            List<String> edcProviderEndpoints = Arrays.asList("http://supplier-control-plane:9184");
+            List<String> edcProviderEndpoints = Arrays.asList("http://172.21.0.11:9184");
+            //List<String> edcProviderEndpoints = Arrays.asList("http://supplier-control-plane:9184");
             edcDiscovery.setConnectorEndpoint(edcProviderEndpoints);
             
             edcDiscoveryResponses.add(edcDiscovery);
