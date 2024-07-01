@@ -22,28 +22,27 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-
 import numberUtil from "@/utils/numberUtil";
 
 // Independentant Constants (If not defined will not crash the system)
 const VERSION = "APP_VERSION";
 
 // Mandatory URLs
-const IDP_URL = "IDENTITY_PROVIDER_URL";
+const IDP_URL = "http://keycloak:8080/";
 
 // Get urls that can be empty
-let serverUrl = "HOST_URL";
-let backendUrl = "DATA_URL";
-let retries = 'APP_API_MAX_RETRIES';
-let searchTimeout = 'API_SEARCH_TIMEOUT';
-let negotiateTimeout = 'API_NEGOTIATE_TIMEOUT';
-let declineTimeout = 'API_DECLINE_TIMEOUT';
-let irsDelay = 'APP_IRS_DELAY';
-let irsMaxWaitingTime = 'APP_IRS_WAITING_TIME'; 
-let delay = 'APP_API_DELAY';
-let clientId = "KEYCLOAK_CLIENTID";
-let realm = "KEYCLOAK_REALM";
-let onLoad = "KEYCLOAK_ONLOAD";
+let serverUrl = "http://localhost:5555";
+let backendUrl = "http://localhost:9999";
+let retries = "APP_API_MAX_RETRIES";
+let searchTimeout = "API_SEARCH_TIMEOUT";
+let negotiateTimeout = "API_NEGOTIATE_TIMEOUT";
+let declineTimeout = "API_DECLINE_TIMEOUT";
+let irsDelay = "APP_IRS_DELAY";
+let irsMaxWaitingTime = "APP_IRS_WAITING_TIME";
+let delay = "APP_API_DELAY";
+let clientId = "miw_public";
+let realm = "miw_test";
+let onLoad = "login-required";
 let commitId = "REPO_COMMIT_ID";
 let repoEndpoint = "REPO_ENDPOINT_URL";
 let roleCheck = "AUTH_ROLE_CHECK";
@@ -53,18 +52,17 @@ let portalUrl = "APP_PORTAL_URL";
 let adminEmail = "APP_ADMIN_EMAIL";
 let autoSign = "APP_AUTO_SIGN";
 
-
 // Default values if the value is not specified
-serverUrl = (serverUrl != null && serverUrl !== "") ? serverUrl : "https://materialpass.int.demo.catena-x.net"
-backendUrl = (backendUrl != null && backendUrl !== "")  ? backendUrl : serverUrl
-clientId = (clientId != null && clientId !== "") ? clientId : "Cl13-CX-Battery"
-realm = (realm != null && realm !== "") ? realm : "CX-Central"
-onLoad = (onLoad != null && onLoad !== "") ? onLoad : "login-required"
-adminEmail = (adminEmail != null && adminEmail !== "") ? adminEmail : "admin@example.com"
-portalUrl = (portalUrl != null && portalUrl !== "") ? portalUrl : "https://portal.int.demo.catena-x.net"
-bpnCheck = (bpnCheck === "true")
-roleCheck = (roleCheck === "true")
-autoSign = (autoSign === "true")
+serverUrl = serverUrl != null && serverUrl !== "" ? serverUrl : "https://materialpass.int.demo.catena-x.net";
+backendUrl = backendUrl != null && backendUrl !== "" ? backendUrl : serverUrl;
+clientId = clientId != null && clientId !== "" ? clientId : "Cl13-CX-Battery";
+realm = realm != null && realm !== "" ? realm : "CX-Central";
+onLoad = onLoad != null && onLoad !== "" ? onLoad : "login-required";
+adminEmail = adminEmail != null && adminEmail !== "" ? adminEmail : "admin@example.com";
+portalUrl = portalUrl != null && portalUrl !== "" ? portalUrl : "https://portal.int.demo.catena-x.net";
+bpnCheck = bpnCheck === "true";
+roleCheck = roleCheck === "true";
+autoSign = autoSign === "true";
 
 // Default Variables if value is not specified or is not a integer
 searchTimeout = numberUtil.parseInt(searchTimeout, 40000);
@@ -98,23 +96,47 @@ const ADMIN_EMAIL = adminEmail;
 const AUTO_SIGN = autoSign;
 // Initialize configuration objects
 let INIT_OPTIONS = {
-  url: null,
-  clientId: CLIENT_ID, // Catena-X ClientId for Battery Pass
-  realm: REALM, // Catena-X Realm
-  onLoad: ONLOAD
+    url: null,
+    clientId: CLIENT_ID, // Catena-X ClientId for Battery Pass
+    realm: REALM, // Catena-X Realm
+    onLoad: ONLOAD,
 };
 let REDIRECT_URI = "";
 
-if (window.location.href.includes("localhost")) { //Modify credentials for local runs
-  INIT_OPTIONS["url"] = (IDP_URL != null) ? IDP_URL : "http://localhost:8088/auth/", //Point to IDP service if specified or localhost
-  REDIRECT_URI = "http://localhost:8080/";
+if (window.location.href.includes("localhost")) {
+    //Modify credentials for local runs
+    (INIT_OPTIONS["url"] = IDP_URL != null ? IDP_URL : "http://localhost:8088/auth/"), //Point to IDP service if specified or localhost
+        (REDIRECT_URI = "http://localhost:8080/");
 } else {
-  if(!IDP_URL.includes("/auth/")){
-    INIT_OPTIONS["url"] = IDP_URL + "/auth/";
-  }else{
-    INIT_OPTIONS["url"] = IDP_URL;
-  }
-  REDIRECT_URI = SERVER_URL;
+    if (!IDP_URL.includes("/auth/")) {
+        INIT_OPTIONS["url"] = IDP_URL + "/auth/";
+    } else {
+        INIT_OPTIONS["url"] = IDP_URL;
+    }
+    REDIRECT_URI = SERVER_URL;
 }
 // Export all the CONSTANTS and VARIABLES
-export { INIT_OPTIONS, REDIRECT_URI, SERVER_URL, IDP_URL, BACKEND_URL, VERSION, NEGOTIATE_TIMEOUT, DECLINE_TIMEOUT, SEARCH_TIMEOUT, API_DELAY, API_MAX_RETRIES, COMMIT_ID, REPO_ENDPOINT,IRS_DELAY, IRS_MAX_WAITING_TIME, BPN_CHECK, BPN, PORTAL_URL, ADMIN_EMAIL, ROLE_CHECK, AUTO_SIGN};
+export {
+    INIT_OPTIONS,
+    REDIRECT_URI,
+    SERVER_URL,
+    IDP_URL,
+    BACKEND_URL,
+    VERSION,
+    NEGOTIATE_TIMEOUT,
+    DECLINE_TIMEOUT,
+    SEARCH_TIMEOUT,
+    API_DELAY,
+    API_MAX_RETRIES,
+    COMMIT_ID,
+    REPO_ENDPOINT,
+    IRS_DELAY,
+    IRS_MAX_WAITING_TIME,
+    BPN_CHECK,
+    BPN,
+    PORTAL_URL,
+    ADMIN_EMAIL,
+    ROLE_CHECK,
+    AUTO_SIGN,
+};
+

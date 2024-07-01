@@ -316,11 +316,14 @@ public class AppController {
             }
 
             Status status = processManager.getStatus(processId);
+            var dataplane = endpointData.getPayload().getDataAddress().getProperties().getEndpoint();
+            String[] parts = status.getDataPlaneUrl().split("public");
+            
             if(status == null){
                 return httpUtil.buildResponse(httpUtil.getNotFound("No status is created"), httpResponse);
             }
 
-            JsonNode passport = dataPlaneService.getPassportFromEndpoint(endpointData, status.getDataPlaneUrl());
+            JsonNode passport = dataPlaneService.getPassportFromEndpoint(endpointData, dataplane + parts[1]);
             if (passport == null) {
                 return httpUtil.buildResponse(httpUtil.getNotFound("Passport not found in data plane!"), httpResponse);
             }

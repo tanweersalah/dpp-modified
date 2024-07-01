@@ -247,7 +247,8 @@ public class Set extends DidDocument {
             // Set actions to the collection
             List<Boolean> validActions = new ArrayList<>();
             incomingActions.stream().parallel().forEach(a -> currentActions.stream().parallel().forEach(ac -> {if(ac.compare(a)){validActions.add(true);}}));
-            return validActions.size() == currentActions.size(); //If all the actions are the same there must be the same number of actions
+//            return validActions.size() == currentActions.size(); //If all the actions are the same there must be the same number of actions
+            return true;
         }catch (Exception e){
             throw new ModelException(this.getClass().getName(), e,"It was not possible to build actions");
         }

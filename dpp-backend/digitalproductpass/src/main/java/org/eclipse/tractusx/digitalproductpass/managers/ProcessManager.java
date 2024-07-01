@@ -29,6 +29,8 @@ package org.eclipse.tractusx.digitalproductpass.managers;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 import org.eclipse.tractusx.digitalproductpass.config.ProcessConfig;
 import org.eclipse.tractusx.digitalproductpass.exceptions.ManagerException;
 import org.eclipse.tractusx.digitalproductpass.models.catenax.Dtr;
@@ -52,6 +54,7 @@ import org.springframework.stereotype.Component;
 import utils.*;
 
 import java.nio.file.Path;
+import java.util.Enumeration;
 import java.util.Map;
 
 /**
@@ -102,8 +105,13 @@ public class ProcessManager {
      */
     public ProcessDataModel loadDataModel(HttpServletRequest httpRequest) {
         try {
+        	
             ProcessDataModel processDataModel = (ProcessDataModel) httpUtil.getSessionValue(httpRequest, this.processDataModelName);
             if (processDataModel == null) {
+            	HttpSession session = httpRequest.getSession();
+                System.out.println("Session ID: " + session.getId());
+                System.out.println("Session Creation Time: " + session.getCreationTime());
+                System.out.println("Session Last Accessed Time: " + session.getLastAccessedTime());
                 processDataModel = new ProcessDataModel();
                 this.httpUtil.setSessionValue(httpRequest, "processDataModel", processDataModel);
                 LogUtil.printMessage("[PROCESS] Process Data Model created for Session ["+this.httpUtil.getSessionId(httpRequest)+"], the server is ready to start processing requests...");

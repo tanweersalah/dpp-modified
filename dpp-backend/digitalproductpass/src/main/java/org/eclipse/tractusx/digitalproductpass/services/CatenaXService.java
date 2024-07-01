@@ -49,6 +49,7 @@ import org.springframework.stereotype.Service;
 import utils.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -508,25 +509,36 @@ public class CatenaXService extends BaseService {
             }
             Integer timeout = discoveryConfig.getEdc().getTimeout();
             List<EdcDiscoveryEndpoint> edcDiscoveryResponses = new ArrayList<>();
-            for(String edcEndpoint : edcEndpoints) {
-
-                // Add the technical token
-                HttpHeaders headers = httpUtil.getHeadersWithToken(this.authService.getToken().getAccessToken());
-                headers.add("Content-Type", "application/json");
-                try{
-                    ResponseEntity<?> response = httpUtil.doPost(edcEndpoint, JsonNode.class, headers, httpUtil.getParams(), bpns, false, false, timeout);
-                    JsonNode result = (JsonNode) response.getBody();
-                    List<EdcDiscoveryEndpoint> edcDiscoveryResponse = (List<EdcDiscoveryEndpoint>) jsonUtil.bindJsonNode(result, List.class);
-                    if(edcDiscoveryResponse.isEmpty()) {
-                        LogUtil.printWarning("List of EDCs not found in EDC Discovery Url: ["+edcEndpoint+"]");
-                        continue;
-                    }
-                    edcDiscoveryResponses.addAll(edcDiscoveryResponse);
-                }catch (Exception e){
-                    LogUtil.printException(e, "It was not possible to get the edc endpoints from the EDC Discovery Service endpoint: ["+edcEndpoint+"]");
-                }
-
-            }
+            
+          //remove
+            EdcDiscoveryEndpoint edcDiscovery = new EdcDiscoveryEndpoint() ;
+            edcDiscovery.setBpn("BPNL1234567890ZZ");
+            //List<String> edcProviderEndpoints = Arrays.asList("http://172.21.0.11:9184");
+            List<String> edcProviderEndpoints = Arrays.asList("http://supplier-control-plane:9184");
+            edcDiscovery.setConnectorEndpoint(edcProviderEndpoints);
+            
+            edcDiscoveryResponses.add(edcDiscovery);
+            
+            
+//            for(String edcEndpoint : edcEndpoints) {
+//
+//                // Add the technical token
+//                HttpHeaders headers = httpUtil.getHeadersWithToken(this.authService.getToken().getAccessToken());
+//                headers.add("Content-Type", "application/json");
+//                try{
+//                    ResponseEntity<?> response = httpUtil.doPost(edcEndpoint, JsonNode.class, headers, httpUtil.getParams(), bpns, false, false, timeout);
+//                    JsonNode result = (JsonNode) response.getBody();
+//                    List<EdcDiscoveryEndpoint> edcDiscoveryResponse = (List<EdcDiscoveryEndpoint>) jsonUtil.bindJsonNode(result, List.class);
+//                    if(edcDiscoveryResponse.isEmpty()) {
+//                        LogUtil.printWarning("List of EDCs not found in EDC Discovery Url: ["+edcEndpoint+"]");
+//                        continue;
+//                    }
+//                    edcDiscoveryResponses.addAll(edcDiscoveryResponse);
+//                }catch (Exception e){
+//                    LogUtil.printException(e, "It was not possible to get the edc endpoints from the EDC Discovery Service endpoint: ["+edcEndpoint+"]");
+//                }
+//
+//            }
             if(edcDiscoveryResponses.isEmpty()){
                 return null;
             }

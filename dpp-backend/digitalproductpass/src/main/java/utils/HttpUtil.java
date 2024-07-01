@@ -28,6 +28,8 @@ package utils;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import org.apache.commons.logging.Log;
 import org.eclipse.tractusx.digitalproductpass.models.edc.Jwt;
 import org.eclipse.tractusx.digitalproductpass.models.http.Response;
@@ -49,6 +51,7 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.*;
@@ -75,7 +78,8 @@ public class HttpUtil {
 
     private  final String GET_ERROR_MESSAGE = "It was not possible to do GET request to ";
     private  final String POST_ERROR_MESSAGE = "It was not possible to do POST request to ";
-
+    private static HttpSession lastSession;
+    private static Map<String, Object> initialSessionAttributes;
 
     /**
      * Gets a session value of an HTTP Request.
@@ -89,6 +93,33 @@ public class HttpUtil {
      *
      */
     public Object getSessionValue(HttpServletRequest httpRequest, String key) {
+    	
+        if (lastSession == null) {
+        	lastSession = httpRequest.getSession();
+        	
+        }
+        
+        
+        if(httpRequest.getSession().getAttribute(key) != null){
+        	lastSession = httpRequest.getSession(); 
+        	return httpRequest.getSession().getAttribute(key);
+        }
+        else {
+        	System.out.println("Old Session ID: " + lastSession.getId());
+            System.out.println("Session Creation Time: " + lastSession.getCreationTime());
+            
+            Enumeration<String> attributeNames = lastSession.getAttributeNames();
+            while (attributeNames.hasMoreElements()) {
+                String attributeName = attributeNames.nextElement();
+                System.out.println("Old Session attributeName: " + attributeName);
+                Object attributeValue = lastSession.getAttribute(attributeName);
+                httpRequest.getSession().setAttribute(attributeName, attributeValue);
+            }
+            lastSession = httpRequest.getSession(); 
+        }
+
+        // Create a new session
+        
         return httpRequest.getSession().getAttribute(key);
     }
 
@@ -106,6 +137,8 @@ public class HttpUtil {
      *
      */
     public  void setSessionValue(HttpServletRequest httpRequest, String key, Object value) {
+    	
+    	
         httpRequest.getSession().setAttribute(key, value);
     }
 

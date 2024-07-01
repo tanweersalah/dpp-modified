@@ -35,26 +35,26 @@ spring:
 
 logging:
   level:
-    root: INFO
-    utils: INFO
+    root: DEBUG
+    utils: DEBUG
 
 configuration:
   maxRetries: 5
 
   keycloak:
-    realm: CX-Central
+    realm: miw_test
     resource: Cl13-CX-Battery
-    tokenUri: 'https://centralidp.int.demo.catena-x.net/auth/realms/CX-Central/protocol/openid-connect/token'
-    userInfoUri: 'https://centralidp.int.demo.catena-x.net/auth/realms/CX-Central/protocol/openid-connect/userinfo'
+    tokenUri: 'http://keycloak:8080/realms/miw_test/protocol/openid-connect/token'
+    userInfoUri: 'http://keycloak:8080/realms/miw_test/protocol/openid-connect/userinfo'
 
   edc:
-    endpoint: 'https://materialpass.int.demo.catena-x.net/consumer'
+    endpoint: 'http://localhost:8181'
     readiness: '/api/check/readiness'
     management: '/management/v2'
     catalog: '/catalog/request'
     negotiation: '/contractnegotiations'
     transfer: '/transferprocesses'
-    receiverEndpoint: 'https://dpp.int.demo.catena-x.net/endpoint'
+    receiverEndpoint: 'http://host.docker.internal:9999/endpoint'
     delay:  100 # -- Negotiation status Delay in milliseconds in between async requests [<= 500]
     transferType: "HttpData-PULL"
     timeout:
@@ -72,7 +72,7 @@ configuration:
       header: "X-Api-Key"
 
   irs:
-    enabled: true
+    enabled: false
     endpoint: "https://materialpass-irs.int.demo.catena-x.net"
     paths:
       job: "/irs/jobs"
@@ -93,7 +93,7 @@ configuration:
       # List of allowed permissions policies
       policies:
         - permission:
-            - action: "USE"
+            - action: "https://w3id.org/edc/v0.0.1/ns/USE"
               logicalConstraint: "odrl:and"
               constraints:
                 - leftOperand: "cx-policy:Membership"
@@ -120,7 +120,7 @@ configuration:
       lifetime: 12 # -- Hours
 
   discovery:
-    endpoint: "https://semantics.int.demo.catena-x.net/discoveryfinder/api/v1.0/administration/connectors/discovery/search"
+    endpoint: "http://localhost:4245/api/v1.0/administration/connectors/discovery/search"
     bpn:
       key: "manufacturerPartId"
       searchPath: "/api/v1.0/administration/connectors/bpnDiscovery/search"
@@ -148,7 +148,7 @@ configuration:
       dir: "data/transfer"
     aspects:
       - "urn:bamm:io.catenax.generic.digital_product_passport:1.0.0#DigitalProductPassport"
-      - "urn:bamm:io.catenax.battery.battery_pass:3.0.1#BatteryPass"
+      - "urn:samm:io.catenax.battery.battery_pass:6.0.0#BatteryPass"
       - "urn:bamm:io.catenax.transmission.transmission_pass:1.0.0#TransmissionPass"
       - "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#DigitalProductPassport"
     policyCheck:
@@ -188,11 +188,14 @@ configuration:
       - "irs.apiKey"
 
 server:
+  servlet:
+    session:
+      timeout: 1800
   error:
     include-message: ALWAYS
     include-binding-errors: ALWAYS
     include-stacktrace: ON_PARAM
     include-exception: false
-  port: 8888
+  port: 9999
   tomcat:
     max-connections: 10000

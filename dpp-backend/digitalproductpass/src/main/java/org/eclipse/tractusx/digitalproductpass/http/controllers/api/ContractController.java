@@ -34,6 +34,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.eclipse.tractusx.digitalproductpass.config.DiscoveryConfig;
 import org.eclipse.tractusx.digitalproductpass.config.DtrConfig;
@@ -61,6 +62,7 @@ import org.springframework.web.bind.annotation.*;
 import utils.*;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -239,7 +241,10 @@ public class ContractController {
                 response = httpUtil.getNotAuthorizedResponse();
                 return httpUtil.buildResponse(response, httpResponse);
             }
-           return contractService.doContractAgreement(httpRequest, httpResponse, tokenRequestBody);
+            
+
+            
+ return contractService.doContractAgreement(httpRequest, httpResponse, tokenRequestBody);
         } catch (Exception e) {
             response.message = e.getMessage();
             return httpUtil.buildResponse(response, httpResponse);
