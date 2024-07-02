@@ -54,7 +54,7 @@ configuration:
     catalog: '/catalog/request'
     negotiation: '/contractnegotiations'
     transfer: '/transferprocesses'
-    receiverEndpoint: 'http://10.22.189.3:9999/endpoint'
+    receiverEndpoint: 'http://172.21.0.11:9999/endpoint'
     delay:  100 # -- Negotiation status Delay in milliseconds in between async requests [<= 500]
     transferType: "HttpData-PULL"
     timeout:
