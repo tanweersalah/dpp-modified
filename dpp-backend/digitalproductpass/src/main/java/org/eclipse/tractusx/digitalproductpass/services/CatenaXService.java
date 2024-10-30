@@ -510,7 +510,8 @@ public class CatenaXService extends BaseService {
             Integer timeout = discoveryConfig.getEdc().getTimeout();
             List<EdcDiscoveryEndpoint> edcDiscoveryResponses = new ArrayList<>();
             
-          //remove
+          //remove this
+            // As we dont have EDC discovery , we have hardcoded the values for Provider EDC
             EdcDiscoveryEndpoint edcDiscovery = new EdcDiscoveryEndpoint() ;
             edcDiscovery.setBpn("BPNL1234567890ZZ");
             //List<String> edcProviderEndpoints = Arrays.asList("http://172.21.0.11:9184");
@@ -519,6 +520,7 @@ public class CatenaXService extends BaseService {
             
             edcDiscoveryResponses.add(edcDiscovery);
             
+            // commented below  code as we dont need to call the EDC Discovery
             
 //            for(String edcEndpoint : edcEndpoints) {
 //
